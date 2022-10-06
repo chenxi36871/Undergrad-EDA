@@ -1,0 +1,7 @@
+
+data2<-read.csv("D://学习//大三上//金融统计学//hw3//data2.csv",header=T)
+data2<-data2[,-1]
+data2<-data2[-31,]
+glm<-lm(P~GXF+XFBZ+GXFZZSD+XFSP+XFSPZZSD,data=data2)
+glm_sub=step(glm)
+summary(glm_sub)

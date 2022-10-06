@@ -1,0 +1,32 @@
+{
+    "id": "4A7A1077",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1606701034996.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "expression": "creditgrp",
+        "caption": "creditgrp",
+        "totalObservations": 900,
+        "displayedObservations": 900,
+        "variables": 21,
+        "cacheKey": "E8B7BFC1",
+        "object": "creditgrp",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=creditgrp&cache_key=E8B7BFC1&max_cols=50",
+        "preview": 0
+    },
+    "folds": "",
+    "lastKnownWriteTime": 7956003919315820404,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1606701034996,
+    "read_only": false,
+    "read_only_alternatives": []
+}

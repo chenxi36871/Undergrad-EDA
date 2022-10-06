@@ -1,0 +1,136 @@
+library(mice)
+library(ggplot2)
+library(corrplot)
+library(car)
+
+#读取数据&预处理
+car<-read.csv('D://学习//大三上//探索性数据分析//hw1//ToyotaCorolla_part.csv',header=TRUE)
+head(car)
+md.pattern(car)
+car$Quarterly_Tax<-cut(car$Quarterly_Tax,c(0,85.5,Inf))
+car$CC<-cut(car$CC,c(0,1601,Inf))
+car$HP<-cut(car$HP,c(0,110.5,Inf))
+car$Doors<-factor(as.character(car$Doors),levels=c("4","2","3","5"))
+car$Fuel_Type<-factor(as.character(car$Fuel_Type),levels = c("CNG","Diesel","Petrol"))
+
+
+#可视化
+#因变量价格
+boxplot(car$Price) 
+summary(car$Price) #均值在10731，有一些数值极大的离群值
+par(mfrow=c(1,1))
+hist(x=log(car$Price),col='lightsteelblue4')
+#价格+使用时长
+ggplot(car)+geom_point(aes(x=Age,y=Price)) #线性负相关
+cor(car$Price,car$Age,use='complete.obs')
+summary(aov(car$Price~car$Age))
+#已使用公里数+价格
+ggplot(car,aes(x=KM,y=Price))+geom_point()
+cor(car$Price,car$KM,use = 'complete.obs')
+#是否在保修期+价格
+car$Mfr_Guarantee<-as.character(car$Mfr_Guarantee)
+ggplot(car)+geom_boxplot(aes(x=Mfr_Guarantee,y=Price,fill=Mfr_Guarantee)) #发现在保修期的二手车价格更高
+#Quarterly_Tax + Price
+ggplot(car)+geom_boxplot(aes(x=Tax,y=Price,fill=Tax))
+#Weight+Price
+ggplot(car,aes(x=Weight,y=Price,))+geom_point()
+car$Tow_Bar<-as.character(car$Tow_Bar)
+ggplot(car)+geom_boxplot(aes(x=Tow_Bar,y=Price,fill=Tow_Bar)) 
+car$Automatic<-as.character(car$Automatic)
+ggplot(car)+geom_boxplot(aes(x=Automatic,y=Price,fill=Automatic)) 
+car$CC<-as.character(car$CC)
+ggplot(car)+geom_boxplot(aes(x=CC,y=Price,fill=CC))
+car$Doors<-as.character(car$Doors)
+ggplot(car)+geom_boxplot(aes(x=Doors,y=Price,fill=Doors))
+ggplot(car)+geom_boxplot(aes(x=Fuel_Type,y=Price,fill=Fuel_Type))
+ggplot(car)+geom_boxplot(aes(x=HP,y=Price,fill=HP))
+car$ABS<-as.character(car$ABS)
+ggplot(car)+geom_boxplot(aes(x=ABS,y=Price,fill=ABS))
+car$Airbag_2<-as.character(car$Airbag_2)
+ggplot(car)+geom_boxplot(aes(x=Airbag_2,y=Price,fill=Airbag_2))
+car$Airco<-as.character(car$Airco)
+ggplot(car)+geom_boxplot(aes(x=Airco,y=Price,fill=Airco))
+car$Boardcomputer<-as.character(car$Boardcomputer)
+ggplot(car)+geom_boxplot(aes(x=Boardcomputer,y=Price,fill=Boardcomputer))
+car$CD_Player<-as.character(car$CD_Player)
+ggplot(car)+geom_boxplot(aes(x=CD_Player,y=Price,fill=CD_Player))
+car$Central_Lock<-as.character(car$Central_Lock)
+ggplot(car)+geom_boxplot(aes(x=Central_Lock,y=Price,fill=Central_Lock))
+car$Powered_Windows<-as.character(car$Powered_Windows)
+ggplot(car)+geom_boxplot(aes(x=Powered_Windows,y=Price,fill=Powered_Windows))
+car$Radio<-as.character(car$Radio)
+ggplot(car)+geom_boxplot(aes(x=Radio,y=Price,fill=Radio))
+car$Sport_Model<-as.character(car$Sport_Model)
+ggplot(car)+geom_boxplot(aes(x=Sport_Model,y=Price,fill=Sport_Model))
+car$Backseat_Divider<-as.character(car$Backseat_Divider)
+ggplot(car)+geom_boxplot(aes(x=Backseat_Divider,y=Price,fill=Backseat_Divider))
+car$Met_Color<-as.character(car$Met_Color)
+ggplot(car)+geom_boxplot(aes(x=Met_Color,y=Price,fill=Met_Color))
+
+summary(aov(car$Price~car$KM))
+summary(aov(car$Price~car$Mfr_Guarantee))
+summary(aov(car$Price~car$Quarterly_Tax))
+summary(aov(car$Price~car$Weight))
+summary(aov(car$Price~car$Tow_Bar))
+summary(aov(car$Price~car$Automatic))#
+summary(aov(car$Price~car$CC))
+summary(aov(car$Price~car$Doors))
+summary(aov(car$Price~car$Fuel_Type))
+summary(aov(car$Price~car$HP))
+summary(aov(car$Price~car$ABS))
+summary(aov(car$Price~car$Airbag_2))
+summary(aov(car$Price~car$Airco))
+summary(aov(car$Price~car$Boardcomputer))
+summary(aov(car$Price~car$CD_Player))
+summary(aov(car$Price~car$Central_Lock))
+summary(aov(car$Price~car$Sport_Model))
+summary(aov(car$Price~car$Backseat_Divider))
+summary(aov(car$Price~car$Met_Color))
+summary(aov(car$Price~car$Powered_Windows))
+summary(aov(car$Price~car$Radio))#
+
+
+#线性回归
+#未取价格对数
+lm_car1<-lm(Price~Automatic+Radio+Age+KM+Quarterly_Tax+Weight+Tow_Bar+CC+Doors+Fuel_Type+HP+Mfr_Guarantee+ABS+Airbag_2+Airco+Boardcomputer+CD_Player+Central_Lock+Powered_Windows+Sport_Model+Backseat_Divider+Met_Color,data=car)
+summary(lm_car1) #AR=0.8794
+par(mfrow=c(2,2),mai=c(0.75,0.8,0.25,0.2))
+plot(lm_car1,which = c(1,2,3,4)) #发现QQ图的尾巴偏离直线，因变量并不服从正态分布
+                                 #cook距离可见明显的强影响点
+round(vif(lm_car1),2)
+#取价格对数后
+lm_car2<-lm(log(Price)~Age+KM+Quarterly_Tax+Weight+Tow_Bar+CC+Doors+Fuel_Type+HP+Mfr_Guarantee+ABS+Airbag_2+Airco+Boardcomputer+CD_Player+Central_Lock+Powered_Windows+Sport_Model+Backseat_Divider+Met_Color,data=car)
+summary(lm_car2)#p=0.863
+round(vif(lm_car2),2)
+par(mfrow=c(2,2),mai=c(0.75,0.8,0.25,0.2))
+plot(lm_car2,which = c(1,2,3,4)) #残差图可见明显的喇叭状，说明存在异方差；QQ图说明因变量仍然不服从真该分布
+
+#AIC(用的是log(price))
+lm_car3<-step(lm_car2)
+summary(lm_car3)#p=0.8632
+round(vif(lm_car3),2)
+drop1(lm_car3) #发现drop掉doors之后AIC增加的最少（增加0）
+#去掉doors之后重新回归
+lm_car4<-lm(log(Price)~Age+KM+Quarterly_Tax+Weight+Tow_Bar+Automatic+Fuel_Type+HP+Mfr_Guarantee+Airbag_2+Airco+CD_Player+Powered_Windows+Sport_Model+Backseat_Divider,data=car)
+summary(lm_car4)
+drop1(lm_car4)
+#去掉sport_model，airbag_2之后重新回归
+lm_car5<-lm(log(Price)~Age+KM+Quarterly_Tax+Weight+Tow_Bar+Automatic+Fuel_Type+HP+Mfr_Guarantee+Airco+CD_Player+Powered_Windows+Backseat_Divider,data=car)
+summary(lm_car5)
+
+par(mfrow=c(2,2),mai=c(0.75,0.8,0.25,0.2))
+plot(lm_car2,which = c(1,2,3,4))
+
+#AIC(not log(price))
+lm_car6<-step(lm_car1)
+summary(lm_car6) #ar=0.8848
+round(vif(lm_car6),2)
+par(mfrow=c(2,2),mai=c(0.75,0.8,0.25,0.2))
+plot(lm_car6,which = c(1,2,3,4))
+
+lm_car7<-lm(Price~Airco+CD_Player+Mfr_Guarantee+Powered_Windows+Sport_Model+HP+Quarterly_Tax+Weight+KM+Age,data=car)
+round(vif(lm_car7),2)
+lm_car8<-lm(Price~Age+KM+Quarterly_Tax+Weight+Tow_Bar+Automatic+Fuel_Type+HP+Mfr_Guarantee+Airco+CD_Player+Powered_Windows+Sport_Model+Backseat_Divider,data=car)
+summary(lm_car7) #AR=0.8766
+par(mfrow=c(2,2),mai=c(0.75,0.8,0.25,0.2))
+plot(lm_car7,which = c(1,2,3,4))

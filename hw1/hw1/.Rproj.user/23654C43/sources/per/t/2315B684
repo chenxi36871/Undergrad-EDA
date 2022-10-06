@@ -1,0 +1,32 @@
+{
+    "id": "2315B684",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1603976312251.0,
+    "source_on_save": false,
+    "relative_order": 4,
+    "properties": {
+        "expression": "func",
+        "caption": "func",
+        "totalObservations": 1436,
+        "displayedObservations": 1436,
+        "variables": 9,
+        "cacheKey": "4BEFC22E",
+        "object": "func",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=func&cache_key=4BEFC22E&max_cols=50",
+        "preview": 0
+    },
+    "folds": "",
+    "lastKnownWriteTime": 2314885530450145326,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1603976312251,
+    "read_only": false,
+    "read_only_alternatives": []
+}

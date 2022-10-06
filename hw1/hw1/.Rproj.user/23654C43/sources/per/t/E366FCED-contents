@@ -1,0 +1,46 @@
+library(ggplot2)
+library(mice)
+data(diamonds)
+head(diamonds)
+str(diamonds) #ord.variable表示有序变量
+set.seed(42)
+small<-diamonds[sample(nrow(diamonds),1000),] #输出diamonds的多少行，选行用sample对行数进行随机不放回抽样1000个
+
+#mapping
+ggplot(data=small,mapping=aes(x=carat,y=price))+geom_point() #以克拉数为X轴变量，price为Y轴变量
+#将切工映射到形状属性
+small$cut.c<-as.character(small$cut) #因为有序变量不建议映射到shapes
+ggplot(small,aes(carat,price,shape=cut.c))+geom_point() 
+#将钻石的颜色映射到颜色属性
+ggplot(small,aes(carat,price,shape=cut.c,colour=color))+geom_point()
+
+
+#geometirc
+
+#layer(通常把不同的图层中共用的映射提供给ggplot函数，
+#      而某一几何对象才需要的映射参数提供给geom_xxx函数。ggplot2可以使用+来叠加图层)
+#geom_abline()用法：abline(a,b)画y=ax+b。abline(lm.obj)画出线性模型得到的方程
+ggplot(small,aes(x=carat,y=price))+geom_point()+geom_abline(intercept = -2412,slope=8038,col="red")
+
+#scale
+#eg.将Y轴坐标进行log10变换，再自己定义为彩虹
+ggplot(small)+geom_point(aes(x=carat,y=price,shape=cut.c,color=color))+scale_y_log10()+scale_color_manual(values=rainbow(7))
+#statistics统计变换是对原始数据进行某种计算，然后在图上表示出来，例如对散点图加上一条回归线
+ggplot(small,aes(x=carat,y=price))+geom_point()+scale_y_log10()+stat_smooth(method="auto")
+ggplot(small,aes(x=carat,y=price))+geom_point()+scale_y_log10()+geom_smooth(method="auto")
+ggplot(small,aes(x=carat,y=price))+geom_point()+stat_summary(fun="mean",col=2,geom="point")
+ggplot(small,aes(x=carat,y=price))+geom_point()+stat_summary(fun="mean",col=2,geom="line")
+
+#coordinate坐标系统（XY轴翻转，笛卡尔坐标和极坐标转换）
+p<-ggplot(small)+geom_bar(aes(x=cut,fill=cut)) #fill相当于按什么来填色
+p
+p+coord_flip() #XY轴互换
+q<-ggplot(small)+geom_bar(aes(x=factor(1),fill=cut)) #转换极坐标
+q
+q+coord_polar(theta = "y") #theta参数表示按x轴还是y轴画饼图分类
+
+#facet分面可以让我们按照某种给定的条件，对数据进行分组，然后分别画图
+#按切工cut分组，分别作图
+p<-ggplot(small,aes(carat,price))+geom_point(aes(color=cut))+scale_y_log10()
+p+facet_wrap(~cut)
+p+facet_wrap(~color)
