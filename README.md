@@ -44,11 +44,17 @@ And there're only 1.8% observations containing outliers. So we deleted them.
 
 Since in natural world, there are way less people (14%) who suffer from coronary heart disease than who don't. Our data is very imbalanced, which will affect the performance of the model. We use SMOTE algorithm to resample original dataset and got a new balanced dataset containing 6743 observations.
 
-###Visulization
-
-###Modeling
-
+### Visulization
+### Modeling
 I trained different models (Logistic Regression, Decision Tree, Random Forest, SVM) and compared their performances given different size of the dataset. The learning rate plot is as below:
 
 <img width="576" alt="image" src="https://user-images.githubusercontent.com/82719564/194443230-95902a7b-3bc4-4bbe-95a0-563ad1ec2cc1.png">
 
+***code (in R language)***
+[preprocessing](https://github.com/chenxi36871/Undergrad-EDA/blob/main/final_project/pre.R)
+[visualization](https://github.com/chenxi36871/Undergrad-EDA/blob/main/final_project/%E5%8F%AF%E8%A7%86%E5%8C%96.R)
+[modeling](https://github.com/chenxi36871/Undergrad-EDA/blob/main/final_project/logistic.R)
+
+***report***
+[pdf](https://github.com/chenxi36871/Undergrad-EDA/blob/main/final_project/%E5%8D%81%E5%B9%B4%E5%86%85%E5%86%A0%E5%BF%83%E7%97%85%E5%8F%91%E7%97%85%E6%A6%82%E7%8E%87%E6%8E%A2%E7%B4%A2.pdf)
+[slides](https://github.com/chenxi36871/Undergrad-EDA/blob/main/final_project/EDA.pptx)
